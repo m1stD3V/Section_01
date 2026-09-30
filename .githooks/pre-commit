@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Git runs this file automatically before creating a commit once you have run
+# deno task setup. macOS and Git for Windows both provide the shell used here.
+
+echo "🔍 Running pre-commit checks..."
+
+# An editor opened before Deno was installed may not know where to find it yet.
+# Check first so we can explain how to fix that instead of just failing.
+if ! command -v deno >/dev/null 2>&1; then
+    echo "❌ Deno is not installed or cannot be found."
+    echo "Install Deno: https://docs.deno.com/runtime/getting_started/installation/"
+    echo "Then restart your terminal or editor and check: deno --version"
+    exit 1
+fi
+
+# Keep the actual checks in deno.json so local commits and GitHub Actions run
+# the same steps. The ci task stops at the first failed check.
+echo "📝 Checking formatting, 🔎 linting, 🔍 types, and 🏗️ the build..."
+if ! deno task ci; then
+    echo "❌ A pre-commit check failed. Your changes are still saved in your files,"
+    echo "but Git has not created this commit. Read the error above for details."
+    echo "For formatting errors, run: deno task fmt"
+    echo "For lint, type, or build errors, fix the reported issue in your files."
+    echo "Then run deno task ci and try your commit again."
+    # A nonzero exit code tells Git to stop the commit.
+    exit 1
+fi
+
+echo "✅ All pre-commit checks passed! Git will now continue the commit."
+# Zero tells Git that the checks succeeded.
+exit 0

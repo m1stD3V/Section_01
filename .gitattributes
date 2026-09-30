@@ -1,0 +1,4 @@
+# Use LF line endings for text files on both Windows and macOS.
+# This keeps Git checkouts consistent with Deno's formatter and shell hooks.
+# Git automatically detects binary files and leaves them unchanged.
+* text=auto eol=lf
