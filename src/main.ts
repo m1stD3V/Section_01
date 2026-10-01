@@ -23,7 +23,7 @@ button.addEventListener("click", () => {
   // This looks like to a good place to add some logic!
   counter++;
   if (counterElement) {
-    counterElement.textContent = "$(counter)";
+    counterElement.textContent = String(counter);
   }
   console.log("I have these thingies:", button, counterElement, counter);
 });
